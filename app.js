@@ -55,6 +55,14 @@ connection.on('connect', (err) => {
   console.log(`Database connected: ${process.env.MYSQL_HOST}`);
 });
 
+connection.on("connect", err => {
+  if (err) {
+    console.error(err.message);
+  } else {
+    queryDatabase();
+  }
+});
+
 connection.connect();
 
 // var connection = mysql.createConnection({
@@ -204,6 +212,8 @@ router.get('/login/:us/:ps',function (req, res){
     
 });
 });
+
+
 
 router.get('/result_all',cors(), function (req, res) {
   connection.query('SELECT rooms_Name,rooms_Description,rooms_Price,rooms_Stock,rooms_Image FROM rooms', function (error, results) {
