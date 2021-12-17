@@ -67,7 +67,7 @@ connection.connect();
 // connection.connect(function (err) {
 //   if (err) throw err;
 //   console.log("Connected DB: " + process.env.MYSQL_DATABASE);
-// });
+// });.
 
 app.use(express.static(path.join(__dirname, "public")));
 
