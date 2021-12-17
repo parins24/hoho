@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Pro</title>
+    <script src="jquery-2.1.4.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css?family=Quicksand:300,500"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <!-- External CSS -->
+    <link rel="stylesheet" href="nav_andFoot.css" />
+
+    <link rel="stylesheet" type="text/css" href="css/nav_andFoot.css" />
+    <!-- -------------- -->
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <style>
+      .table {
+        text-align: center;
+        width: 100%;
+        /* margin-left: 2%; */
+        margin-top: 2%;
+        margin-bottom: 5%;
+      }
+      .thead-dark {
+        /* text-align: center; */
+        margin-left: 10%;
+        margin-right: 10%;
+        width: 100%;
+      }
+      .container {
+        padding-bottom: 3%;
+      }
+      #popup {
+        display: none;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        position: fixed;
+        background-color: rgba(50, 50, 50, 0.9);
+      }
+      #popup2 {
+        display: none;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        position: fixed;
+        background-color: rgba(50, 50, 50, 0.9);
+      }
+      #form {
+        position: absolute;
+        background-color: #f5f5f5;
+        border: 1px solid #212121;
+        border-radius: 20px;
+        padding: 20px;
+        width: 80%;
+        left: 20%;
+        top: 3%;
+        margin-left: -150px;
+      }
+      #form2 {
+        position: absolute;
+        background-color: #f5f5f5;
+        border: 1px solid #212121;
+        border-radius: 20px;
+        padding: 20px;
+        width: 80%;
+        left: 20%;
+        top: 3%;
+        margin-left: -150px;
+      }
+      #popup3 {
+        display: none;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        position: fixed;
+        background-color: rgba(50, 50, 50, 0.9);
+      }
+      #form3 {
+        position: absolute;
+        background-color: #ffffff;
+        border: 1px solid #212121;
+        border-radius: 20px;
+        padding: 20px;
+        width: 70%;
+        left: 25%;
+        top: 3%;
+        margin-left: -150px;
+      }
+      #close {
+        position: absolute;
+        font-weight: bold;
+        margin-left: 94%;
+        margin-top: -10px;
+        width: 40px;
+        height: 38px;
+      }
+      #submit {
+        margin-top: 0;
+        margin-left: 95%;
+      }
+      input {
+        border-radius: 11px;
+        padding: 1%;
+        width: 50%;
+        margin-left: 1%;
+      }
+      table input {
+        border-width: 0px;
+        box-shadow: 0 0 5pt 2pt #d3d3d3;
+        width: 80%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="loader-wrapper">
+      <span class="loader"><span class="loader-inner"></span></span>
+    </div>
+    <button
+      id="Back"
+      onclick="window.location.href='/admin'"
+      ;
+      type="button"
+      class="btn btn-outline-dark"
+      style="
+        padding: 7px;
+        border-radius: 30px;
+        width: 10%;
+        margin-top: 2%;
+        margin-left: 2%;
+      "
+    >
+      <h4><i class="fas fa-angle-left" style="font-size: 24px"></i> Back</h4>
+    </button>
+    <div class="container" style="width: 100%">
+      <h1 style="padding-top: 0%; padding-bottom: 5%">User Management</h1>
+      <label>Search by ID </label>
+      <input
+        class=""
+        type="text"
+        placeholder="Enter the Id"
+        required
+        name="Id"
+        pattern="[0-9]{1,}"
+        id="req_id"
+        style="border-radius: 11px; padding: 1%; width: 50%; margin-left: 1%"
+        onkeydown="search(this)"
+      />
+      <button
+        type="button"
+        class="btn btn-outline-success"
+        style="margin-left: 24%"
+        onclick="showForm()"
+      >
+        Insert
+      </button>
+      <button
+        type="button"
+        class="btn btn-outline-dark"
+        style="margin-left: 1%"
+        onclick="showall()"
+      >
+        Show all
+      </button>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">User_Id</th>
+            <th scope="col">User_Username</th>
+            <th scope="col">User_Password</th>
+            <th scope="col">User_Fname</th>
+            <th scope="col">User_Lname</th>
+            <th scope="col">Email</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+      <div id="not_found"></div>
+    </div>
+
+    <!-- Insert form -->
+    <div id="popup">
+      <form id="form">
+        <button
+          id="close"
+          onclick="hide()"
+          type="button"
+          class="btn btn-outline-danger"
+          style="padding: 5px; border-radius: 20px"
+        >
+          <i class="material-icons">close</i>
+        </button>
+
+        <h2
+          style="
+            margin-top: 1%;
+            margin-bottom: 0;
+            padding-bottom: 0;
+            text-align: center;
+          "
+        >
+          Insert User
+        </h2>
+
+        <table class="table" style="margin-bottom: 1%">
+          <thead>
+            <tr>
+              <th scope="col">Variabel</th>
+              <th scope="col">Detail</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>User_Id:</td>
+              <td>
+                <input id="User_Id" name="User_Id" type="text" required />
+              </td>
+            </tr>
+            <tr>
+              <td>User_Username:</td>
+              <td>
+                <input
+                  id="User_Username"
+                  name="User_Username"
+                  type="text"
+                  required
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>User_Password:</td>
+              <td>
+                <input
+                  id="User_Password"
+                  name="User_Password"
+                  type="text"
+                  required
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>User_Fname:</td>
+              <td>
+                <input id="User_Fname" name="User_Fname" type="text" />
+              </td>
+            </tr>
+            <tr>
+              <td>User_Lname:</td>
+              <td>
+                <input id="User_Lname" name="User_Lname" type="text" required />
+              </td>
+            </tr>
+            <tr>
+              <td>Address:</td>
+              <td>
+                <input id="Address" name="Address" type="text" required />
+              </td>
+            </tr>
+            <tr>
+              <td>Date Of Birth:</td>
+              <td>
+                <input id="User_Age" name="User_Age" type="date" required />
+              </td>
+            </tr>
+            <tr>
+              <td>Email:</td>
+              <td>
+                <input id="Email" name="Email" type="text" required />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <button
+          type="button"
+          id="submit"
+          class="btn btn-success"
+          onclick="add()"
+        >
+          Add
+        </button>
+      </form>
+    </div>
+
+    <!-- Update Form -->
+    <div id="popup2">
+      <form id="form2">
+        <button
+          id="close"
+          onclick="hide()"
+          type="button"
+          class="btn btn-outline-danger"
+          style="padding: 5px; border-radius: 20px"
+        >
+          <i class="material-icons">close</i>
+        </button>
+
+        <h2
+          style="
+            margin-top: 1%;
+            margin-bottom: 0;
+            padding-bottom: 0;
+            text-align: center;
+          "
+        >
+          Update User
+        </h2>
+
+        <table class="table" style="margin-bottom: 1%">
+          <thead>
+            <tr>
+              <th scope="col">Variabel</th>
+              <th scope="col">Detail</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>User_Id:</td>
+              <td>
+                <input id="User_Id2" name="User_Id" type="text" required />
+              </td>
+            </tr>
+            <tr>
+              <td>User_Username:</td>
+              <td>
+                <input
+                  id="User_Username2"
+                  name="User_Username"
+                  type="text"
+                  required
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>User_Password:</td>
+              <td>
+                <input
+                  id="User_Password2"
+                  name="User_Password"
+                  type="text"
+                  required
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>User_Fname:</td>
+              <td>
+                <input id="User_Fname2" name="User_Fname" type="text" />
+              </td>
+            </tr>
+            <tr>
+              <td>User_Lname:</td>
+              <td>
+                <input
+                  id="User_Lname2"
+                  name="User_Lname"
+                  type="text"
+                  required
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>Address:</td>
+              <td>
+                <input id="Address2" name="Address" type="text" required />
+              </td>
+            </tr>
+            <tr>
+              <td>Date Of Birth:</td>
+              <td>
+                <input id="User_Age2" name="User_Age" type="text" />
+              </td>
+            </tr>
+            <tr>
+              <td>Email:</td>
+              <td>
+                <input id="Email2" name="Email" type="text" required />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <button
+          type="button"
+          id="submit"
+          class="btn btn-warning"
+          onclick="update()"
+          style="margin-left: 93%"
+        >
+          update
+        </button>
+      </form>
+    </div>
+
+    <!-- confirm delete -->
+    <div id="popup3">
+      <form id="form3">
+        <button
+          id="close"
+          onclick="hide()"
+          type="button"
+          class="btn btn-outline-danger"
+          style="padding: 5px; border-radius: 20px"
+        >
+          <i class="material-icons">close</i>
+        </button>
+        <img
+          src="http://localhost:3030/images/cancel.jpg"
+          style="width: 20%; margin-left: 40%"
+        />
+        <h2
+          style="
+            margin-top: 1%;
+            margin-bottom: 0;
+            padding-bottom: 0;
+            text-align: center;
+          "
+        >
+          Are you sure?
+        </h2>
+
+        <h4
+          style="
+            margin-top: 1%;
+            margin-bottom: 2%;
+            padding-bottom: 0;
+            text-align: center;
+            opacity: 0.8;
+          "
+        >
+          Do you really want to delete this records?
+        </h4>
+
+        <button
+          type="button"
+          id="cancel"
+          class="btn btn-secondary"
+          onclick="hide()"
+          style="margin-left: 30%; width: 10%; font-size:20px;"
+        >
+          cancel
+        </button>
+        <button
+          type="button"
+          id="delete"
+          class="btn btn-danger"
+
+          style="margin-left: 20%; width: 10%; font-size:20px;"
+        >
+          Delete
+        </button>
+      </form>
+    </div>
+    <!--  -->
+    <!-- script form -->
+
+    <script>
+      let idbtn2 = document.getElementById("User_Id2");
+      let Usnamebtn2 = document.getElementById("User_Username2");
+      let Passbtn2 = document.getElementById("User_Password2");
+      let Fnamebtn2 = document.getElementById("User_Fname2");
+      let Lnamebtn2 = document.getElementById("User_Lname2");
+      let Adressbtn2 = document.getElementById("Address2");
+      let Agebtn2 = document.getElementById("User_Age2");
+      let Emailbtn2 = document.getElementById("Email2");
+
+      function showForm() {
+        document.getElementById("popup").style.display = "block";
+      }
+      function showForm2(id) {
+        document.getElementById("popup2").style.display = "block";
+        callProject("http://localhost:3030/allUser/" + id, "select").then(
+          (data) => {
+            
+            idbtn2.value = data.data.User_Id;
+            Usnamebtn2.value = data.data.User_Username;
+            Passbtn2.value = data.data.User_Password;
+            Fnamebtn2.value = data.data.User_Fname;
+            Lnamebtn2.value = data.data.User_Lname;
+            Adressbtn2.value = data.data.Address;
+            Agebtn2.value = data.data.User_Age;
+            Emailbtn2.value = data.data.Email;
+          }
+        );
+      }
+      function showForm3(id) {
+        document.getElementById("popup3").style.display = "block";
+        document.getElementById("delete").addEventListener("click",function(){
+          let user = {
+            User_Id: id,
+          };
+          callProject(
+            "http://localhost:3030/deleteUser",
+            "delete",
+            user
+          ).then((data) => {
+            if (data.data > 0) {
+              alert("User has been deleted");
+              showall();
+              // location.reload();
+            }
+          });
+          hide();
+        })
+      }
+
+      function hide() {
+        document.getElementById("popup").style.display = "none";
+        document.getElementById("popup2").style.display = "none";
+        document.getElementById("popup3").style.display = "none";
+      }
+    </script>
+
+    <script>
+      let idbtn = document.getElementById("User_Id");
+      let Usnamebtn = document.getElementById("User_Username");
+      let Passbtn = document.getElementById("User_Password");
+      let Fnamebtn = document.getElementById("User_Fname");
+      let Lnamebtn = document.getElementById("User_Lname");
+      let Adressbtn = document.getElementById("Address");
+      let Agebtn = document.getElementById("User_Age");
+      let Emailbtn = document.getElementById("Email");
+
+      function clearInput() {
+        idbtn.value = "";
+        Usnamebtn.value = "";
+        Passbtn.value = "";
+        Fnamebtn.value = "";
+        Lnamebtn.value = "";
+        Adressbtn.value = "";
+        Agebtn.value = "";
+        Emailbtn.value = "";
+      }
+
+      function add() {
+        let idV = idbtn.value;
+        let UsnameV = Usnamebtn.value;
+        let PassV = Passbtn.value;
+        let FnameV = Fnamebtn.value;
+        let LnameV = Lnamebtn.value;
+        let AdressV = Adressbtn.value;
+        let AgeV = Agebtn.value;
+        let EmailV = Emailbtn.value;
+        let user_data = {
+          user: {
+            User_Id: idV,
+            User_Username: UsnameV,
+            User_Password: PassV,
+            User_Fname: FnameV,
+            User_Lname: LnameV,
+            Address: AdressV,
+            User_Age: AgeV,
+            Email: EmailV,
+          },
+        };
+        callProject(
+          "http://localhost:3030/insertUser",
+          "insert",
+          user_data
+        ).then((data) => {
+          console.log(data);
+          if (data.data > 0) {
+            alert(data.message);
+            clearInput();
+            hide();
+            showall();
+          }
+        });
+      }
+
+      function update() {
+        let product_data = {
+          product: {
+            product_Id: idbtn2.value,
+            product_type: typebtn2.value,
+            product_Name: namebtn2.value,
+            product_Description: desbtn2.value,
+            product_Price: pricebtn2.value,
+            product_Stock: stockbtn2.value,
+            product_Shop: shopbtn2.value,
+            product_image: imbtn2.value,
+          },
+        };
+        callProject(
+          "http://localhost:3030/update",
+          "update",
+          product_data
+        ).then((data) => {
+          if (data.data > 0) {
+            alert(data.message);
+            hide();
+            showall();
+          }
+        });
+      }
+    </script>
+
+    <script>
+      window.addEventListener("load", function () {
+        const loader = document.querySelector(".loader-wrapper");
+        setTimeout(() => {
+          loader.className += " hidden";
+        }, 200);
+        // class "loader hidden"
+      });
+      async function callProject(url, method, sentData = {}) {
+        let data;
+        if (method == "selectall") {
+          let response = await fetch(url, {
+            method: "GET",
+          });
+          data = await response.json();
+        } else if (method == "select") {
+          let response = await fetch(url, {
+            method: "GET",
+          });
+          data = await response.json();
+        } else if (
+          method == "insert" ||
+          method == "update" ||
+          method == "delete"
+        ) {
+          let aMethod;
+          if (method == "insert") {
+            aMethod = "POST";
+          } else if (method == "update") {
+            aMethod = "PUT";
+          } else if (method == "delete") {
+            aMethod = "DELETE";
+          }
+          let response = await fetch(url, {
+            method: aMethod,
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(sentData),
+          });
+          data = await response.json();
+        }
+        return data;
+      }
+      function showall() {
+        let not = document.querySelector("#not_found");
+        not.innerHTML = "";
+        callProject("http://localhost:3030/allUser", "selectall").then(
+          (data) => {
+            if (data.data.length > 0) {
+              // alert(data.message);
+              let output = "";
+              data.data.forEach((element) => {
+                output += "<tr>";
+                output += "<td>" + element.User_Id + "</td>";
+                output += "<td>" + element.User_Username + "</td>";
+                output += "<td>" + element.User_Password + "</td>";
+                output += "<td>" + element.User_Fname + "</td>";
+                output += "<td>" + element.User_Lname + "</td>  ";
+                output += "<td>" + element.Email + "</td>  ";
+                output +=
+                  "<td>" +
+                  "<button id = " +
+                  element.User_Id +
+                  " onclick= 'showForm2(id)' type='button' class='btn btn-outline-warning' style='width= 20%;'><i class='fas fa-cog'></i></button>" +
+                  "</td> ";
+                output +=
+                  "<td>" +
+                  "<button id = " +
+                  element.User_Id +
+                  " onclick= 'confirm(id)' type='button' class='btn btn-outline-danger' style='padding-bottom:2%;'><i class='material-icons' style=''>close</i></button>" +
+                  "</td> </tr>";
+              });
+
+              let result = document.querySelector("#tbody");
+              result.innerHTML = "";
+              result.innerHTML += output;
+            }
+          }
+        );
+      }
+      showall();
+
+      function confirm(id) {
+        showForm3(id);
+      }
+    </script>
+    <script>
+      function search(ele) {
+        id = ele.value;
+        if (event.key === "Enter") {
+          // alert(id)
+          callProject("http://localhost:3030/allUser/" + id, "select").then(
+            (data) => {
+              console.log(data);
+              let result = document.querySelector("#tbody");
+              let not = document.querySelector("#not_found");
+              not.innerHTML = "";
+              result.innerHTML = "";
+              if (data.data) {
+                // alert(data.message);
+                var output = "";
+                output += "<tr>";
+                output += "<td>" + data.data.User_Id + "</td>";
+                output += "<td>" + data.data.User_Username + "</td>";
+                output += "<td>" + data.data.User_Password + "</td>";
+                output += "<td>" + data.data.User_Fname + "</td>";
+                output += "<td>" + data.data.User_Lname + "</td>  ";
+                output += "<td>" + data.data.Email + "</td>  ";
+                output +=
+                  "<td>" +
+                  "<button id = " +
+                  data.data.User_Id +
+                  " onclick= 'showForm2(id)' type='button' class='btn btn-outline-warning' style='width= 20%;'><i class='fas fa-cog'></i></button>" +
+                  "</td> ";
+                output +=
+                  "<td>" +
+                  "<button id = " +
+                  data.data.User_Id +
+                  " onclick= 'confirm(id)' type='button' class='btn btn-outline-danger' style='padding-bottom:2%;'><i class='material-icons' style=''>close</i></button>" +
+                  "</td> </tr>";
+                result.innerHTML += output;
+              } else {
+                not.innerHTML = "<h1 style='color:red;'>No product found</h1>";
+              }
+            }
+          );
+        }
+      }
+    </script>
+  </body>
+</html>

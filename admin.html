@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="jquery-2.1.4.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css?family=Quicksand:300,500"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css"
+    />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <!-- External CSS -->
+    <link rel="stylesheet" href="nav_andFoot.css" />
+    
+    <link rel="stylesheet" type="text/css" href="css/nav_andFoot.css" />
+    <!-- -------------- -->
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+  </head>
+  <body>
+      
+    <div class="loader-wrapper">
+      <span class="loader"><span class="loader-inner"></span></span>
+    </div>
+    <div class="container">
+        <h1>Administrator</h1>
+        <br>
+        <h6>Choose what do you want to manage</h6>
+        <br>
+        <button class="button" id="ProBtn" onclick="window.location.href='/adminPro'"><span> Product </span></button>
+        <button class="button" id="UserBtn" onclick="window.location.href='/adminUser'"><span> User </span></button>
+        <br>
+        <button class="button" id="GoHome" onclick="window.location.href='/Home'"><span> Go to home page </span></button>
+        
+    </div>
+
+    <script>
+      window.addEventListener("load", function () {
+        const loader = document.querySelector(".loader-wrapper");
+        setTimeout(() => { loader.className += " hidden"; }, 500);
+         // class "loader hidden"
+      });
+    </script>
+  </body>
+</html>
