@@ -55,13 +55,6 @@ connection.on('connect', (err) => {
   console.log(`Database connected: ${process.env.MYSQL_HOST}`);
 });
 
-connection.on("connect", err => {
-  if (err) {
-    console.error(err.message);
-  } else {
-    queryDatabase();
-  }
-});
 
 connection.connect();
 
