@@ -64,7 +64,7 @@
         <nav class="navbar navbar-expand fixed-top" id="navbar">
           <a class="navbar-brand" href="Home">
             <img
-              src="http://localhost:3030/images/SPP.png"
+              src="/images/SPP.png"
               alt="logo"
               id="logo"
             />
@@ -87,7 +87,7 @@
                 >
                   <img
                     id="icon"
-                    src="http://localhost:3030/images/user.png"
+                    src="/images/user.png"
                     alt="icons"
                 /></a>
                 <div
@@ -99,7 +99,7 @@
                   <a class="dropdown-item" href="#"
                     ><img
                       id="icon"
-                      src="http://localhost:3030/images/carts.png"
+                      src="/images/carts.png"
                       style="align-content: center"
                       alt="icons"
                   /></a>
@@ -181,7 +181,7 @@
 
 
 
-
+        
         //document.getElementById("re").innerText = re
 
         async function callProduct(url, method, sentData = {}) {
@@ -196,7 +196,7 @@
 
         callProduct("http://localhost:3030/result/" + text ).then(
             (data) => {
-                console.log(data);
+                console.log("TUUUUUUUUUUUUUUUUUUUUUUUUUUU");
                 
                 if (data.data.length > 0) {
                     // alert(data.data.length);
