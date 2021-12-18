@@ -193,16 +193,17 @@
             data = await response.json();
             return data
         }
-
-        callProduct("http://localhost:3030/result/" + text ).then(
+         
+        callProduct("/result/" + text ).then(
             (data) => {
-                console.log("TUUUUUUUUUUUUUUUUUUUUUUUUUUU");
+                
                 
                 if (data.data.length > 0) {
                     // alert(data.data.length);
                     let output = '';
                     //output = "<div class= 'card-deck' style='width: 90%; margin-top:3%; margin-left: 5%; margin-bottom: 5%;'>";
                     data.data.forEach((element) => {
+                        
                         output += "<div class= 'card-deck' style='width: 25%; margin-top:3%; margin-left: 5%; margin-bottom: 5%;'>"
                         output += "<div class='card'>";
                         output += "<div class='container' style='width:60%; align-self: center; padding-top:20px;''>";

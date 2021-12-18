@@ -5,10 +5,15 @@ const bp = require("body-parser");
 const dotenv = require("dotenv");
 dotenv.config();
 const session = require("express-session");
+const { Connection, Request } = require("tedious");
+
 const router = express.Router();
 app.use("/", router); // Register the router
 const  bodyParser = require('body-parser');
 var cors = require('cors');
+const { response } = require("express");
+const res = require("express/lib/response");
+const { send } = require("process");
 router.use(cors());
 router.use(bp.json());
 router.use(bp.urlencoded({ extended: true }));
@@ -29,19 +34,45 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 // const jwt = require("jsonwebtoken")
 
-const mysql = require("mysql2");
+// const mysql = require("mysql2");
 
-var connection = mysql.createConnection({
-  host: process.env.MYSQL_HOST,
-  user: process.env.MYSQL_USERNAME,
-  password: process.env.MYSQL_PASSWORD,
-  database: process.env.MYSQL_DATABASE,
+const config = {
+  authentication: {
+    options: {
+      userName: process.env.MYSQL_USERNAME,
+      password: process.env.MYSQL_PASSWORD,
+    },
+    type: 'default',
+  },
+  server: process.env.MYSQL_HOST,
+  options: {
+    database: process.env.MYSQL_DATABASE,
+    encrypt: true,
+  }
+};
+
+var connection = new Connection(config);
+
+connection.on('connect', (err) => {
+  if (err) console.log(err.message);
+  console.log(`Database connected: ${process.env.MYSQL_HOST}`);
 });
 
-connection.connect(function (err) {
-  if (err) throw err;
-  console.log("Connected DB: " + process.env.MYSQL_DATABASE);
-});
+
+connection.connect();
+
+// var connection = mysql.createConnection({
+//   host: process.env.MYSQL_HOST,
+//   user: process.env.MYSQL_USERNAME,
+//   password: process.env.MYSQL_PASSWORD,
+//   database: process.env.MYSQL_DATABASE,
+// });
+
+// connection.connect(function (err) {
+//   if (err) throw err;
+//   console.log("Connected DB: " + process.env.MYSQL_DATABASE);
+// });.
+
 app.use(express.static(path.join(__dirname, "public")));
 
 router.get("/", function (req, res) {
@@ -178,35 +209,87 @@ router.get('/login/:us/:ps',function (req, res){
 });
 });
 
+
+
 router.get('/result_all',cors(), function (req, res) {
-  connection.query('SELECT product_Name,product_Price,product_Stock,product_Shop,product_image FROM product', function (error, results) {
+  connection.query('SELECT rooms_Name,rooms_Description,rooms_Price,rooms_Stock,rooms_Image FROM rooms', function (error, results) {
       if (error) throw error;
       console.log(results);
-      return res.send({ error: false, data: results, message: 'Select all product ' });
+      return res.send({ error: false, data: results, message: 'Select all rooms ' });
   });
 });
 
 router.get('/result/:name',cors(), function (req, res) {
   let product_name = req.params.name;
+  let result;
   console.log(product_name);
   if (!product_name) {
       return res.status(400).send({ error: true, message: 'Please provide product name' });
   }
-   connection.query(`SELECT * FROM rooms where rooms_Name LIKE '%${product_name}%' or rooms_Description LIKE '%${product_name}%'`, function (error, results) {
-      if (error) throw error;
-      console.log(results);
-      if (results.length > 0) {
-          return res.send({ error: false, data: results, message: 'Result of rooms' });
+  searchName(product_name);
+
+  
+  // function sendR(result){
+  //   console.log(result)
+  //   const data = result;
+   
+  // }
+ 
+  function searchName(product_name) {
+    console.log("Reading rows from the Table...");
+  
+    // Read all rows from table
+    const request = new Request(
+      `SELECT * FROM rooms where rooms_Name LIKE '%${product_name}%' or rooms_Description LIKE '%${product_name}%'`,
+      (err, rowCount) => {
+        if (err) {
+          console.error(err.message);
+        } else {
+          console.log(`${rowCount} row(s) returned`);
+          console.log(data);
+          result = JSON.stringify(data);
+          console.log(result)
+          console.log(Bigdata)
+          // Bigdata = JSON.stringify(Bigdata)
+          // sendR(result);
+          return res.send({ error: false, data: Bigdata, message: 'Result of rooms444' });
+        }
       }
-      else {
-          connection.query('SELECT * FROM rooms', function (error, results) {
-              if (error) throw error;
-              console.log("Juakuy");
-              console.log(results);
-              return res.send({ error: false, data: results, message: 'No product' });
-          });
-      }
-  });
+    );
+    connection.execSql(request);
+    var counter =1;
+    const data ={};
+    var Bigdata = [];
+    request.on("row", columns => {
+      data[counter]={}
+      columns.forEach(column => {
+        console.log("%s\t%s", column.metadata.colName, column.value);
+        data[counter][column.metadata.colName] = column.value;
+        
+      });
+      Bigdata.push(data[counter]);
+      counter +=1;
+      
+    });
+    
+    return result;
+  }
+  // connection.query(`SELECT * FROM rooms where rooms_Name LIKE '%${product_name}%' or rooms_Description LIKE '%${product_name}%'`, function (error, results) {
+  //     if (error) throw error;
+  //     console.log(results);
+  //     if (results.length > 0) {
+  //         return res.send({ error: false, data: results, message: 'Result of rooms' });
+  //     }
+  //     else {
+  //         connection.query('SELECT * FROM rooms', function (error, results) {
+  //             if (error) throw error;
+  //             console.log("Juakuy");
+  //             console.log(results);
+  //             return res.send({ error: false, data: results, message: 'No product' });
+  //         });
+  //     }
+  // });
+  // return res.send({ error: false, data: results, message: 'Result of rooms' });
 });
 
 
