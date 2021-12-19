@@ -212,11 +212,48 @@ router.get('/login/:us/:ps',function (req, res){
 
 
 router.get('/result_all',cors(), function (req, res) {
-  connection.query('SELECT rooms_Name,rooms_Description,rooms_Price,rooms_Stock,rooms_Image FROM rooms', function (error, results) {
-      if (error) throw error;
-      console.log(results);
-      return res.send({ error: false, data: results, message: 'Select all rooms ' });
-  });
+  
+  searchAll()
+  function searchAll() {
+    console.log("Reading All");
+  
+    // Read all rows from table
+    const request = new Request(
+      `SELECT * FROM rooms`,
+      (err, rowCount) => {
+        if (err) {
+          console.error(err.message);
+        } else {
+          console.log(`${rowCount} row(s) returned`);
+          console.log(data);
+          result = JSON.stringify(data);
+          console.log(result)
+          console.log(Bigdata)
+          // Bigdata = JSON.stringify(Bigdata)
+          // sendR(result);
+          
+          return res.send({ error: false, data: Bigdata, message: 'Result of rooms444' });
+        }
+      }
+    );
+    connection.execSql(request);
+    var counter =1;
+    const data ={};
+    var Bigdata = [];
+    request.on("row", columns => {
+      data[counter]={}
+      columns.forEach(column => {
+        console.log("%s\t%s", column.metadata.colName, column.value);
+        data[counter][column.metadata.colName] = column.value;
+        
+      });
+      Bigdata.push(data[counter]);
+      counter +=1;
+      
+    });
+    
+    return result;
+  }
 });
 
 router.get('/result/:name',cors(), function (req, res) {
@@ -227,13 +264,6 @@ router.get('/result/:name',cors(), function (req, res) {
       return res.status(400).send({ error: true, message: 'Please provide product name' });
   }
   searchName(product_name);
-
-  
-  // function sendR(result){
-  //   console.log(result)
-  //   const data = result;
-   
-  // }
  
   function searchName(product_name) {
     console.log("Reading rows from the Table...");
@@ -257,9 +287,11 @@ router.get('/result/:name',cors(), function (req, res) {
       }
     );
     connection.execSql(request);
+
     var counter =1;
     const data ={};
     var Bigdata = [];
+
     request.on("row", columns => {
       data[counter]={}
       columns.forEach(column => {
@@ -274,22 +306,6 @@ router.get('/result/:name',cors(), function (req, res) {
     
     return result;
   }
-  // connection.query(`SELECT * FROM rooms where rooms_Name LIKE '%${product_name}%' or rooms_Description LIKE '%${product_name}%'`, function (error, results) {
-  //     if (error) throw error;
-  //     console.log(results);
-  //     if (results.length > 0) {
-  //         return res.send({ error: false, data: results, message: 'Result of rooms' });
-  //     }
-  //     else {
-  //         connection.query('SELECT * FROM rooms', function (error, results) {
-  //             if (error) throw error;
-  //             console.log("Juakuy");
-  //             console.log(results);
-  //             return res.send({ error: false, data: results, message: 'No product' });
-  //         });
-  //     }
-  // });
-  // return res.send({ error: false, data: results, message: 'Result of rooms' });
 });
 
 
@@ -339,18 +355,101 @@ router.delete('/deleteUser', function (req, res) {
       });
   });
 });
-
-router.get('/all/:product_Id', function (req, res) {
-  let product_Id = req.params.product_Id;
-  console.log(product_Id);
-  if (!product_Id) {
+router.get('/all_R/:rooms_Id', function (req, res) {
+  let rooms_Id = req.params.rooms_Id;
+  let result;
+  console.log(rooms_Id);
+  if (!rooms_Id) {
+      return res.status(400).send({ error: true, message: 'Please provide rooms_Id.' });
+  }
+  searchId(rooms_Id);
+  function searchId(rooms_Id) {
+    console.log("rooms_Id");
+  
+    // Read all rows from table
+    const request = new Request(
+      `SELECT * FROM rooms where rooms_Id=${rooms_Id}`,
+      (err, rowCount) => {
+        if (err) {
+          console.error(err.message);
+        } else {
+          console.log(`${rowCount} row(s) returned`);
+          console.log(data);
+          result = JSON.stringify(data);
+          console.log(result)
+          console.log(Bigdata)
+          // Bigdata = JSON.stringify(Bigdata)
+          // sendR(result);
+          return res.send({ error: false, data: Bigdata, message: 'Result of Booking' });
+        }
+      }
+    );
+    connection.execSql(request);
+    var counter =1;
+    const data ={};
+    var Bigdata = [];
+    request.on("row", columns => {
+      data[counter]={}
+      columns.forEach(column => {
+        console.log("%s\t%s", column.metadata.colName, column.value);
+        data[counter][column.metadata.colName] = column.value;
+        
+      });
+      Bigdata.push(data[counter]);
+      counter +=1;
+      
+    });
+    
+    return result;
+  }
+});
+router.get('/all/:Booking_Id', function (req, res) {
+  let Booking_Id = req.params.Booking_Id;
+  let result;
+  console.log(Booking_Id);
+  if (!Booking_Id) {
       return res.status(400).send({ error: true, message: 'Please provide student id.' });
   }
-  connection.query('SELECT * FROM product where product_Id=?', product_Id, function (error, results) {
-      if (error) throw error;
-      console.log(results)
-      return res.send({ error: false, data: results[0], message: 'product retrieved' });
-  });
+  searchId(Booking_Id);
+  function searchId(Booking_Id) {
+    console.log("Booking ID");
+  
+    // Read all rows from table
+    const request = new Request(
+      `SELECT * FROM bookingList where Booking_Id=${Booking_Id}`,
+      (err, rowCount) => {
+        if (err) {
+          console.error(err.message);
+        } else {
+          console.log(`${rowCount} row(s) returned`);
+          console.log(data);
+          result = JSON.stringify(data);
+          console.log(result)
+          console.log(Bigdata)
+          // Bigdata = JSON.stringify(Bigdata)
+          // sendR(result);
+          return res.send({ error: false, data: Bigdata, message: 'Result of Booking' });
+        }
+      }
+    );
+    connection.execSql(request);
+    var counter =1;
+    const data ={};
+    var Bigdata = [];
+    request.on("row", columns => {
+      data[counter]={}
+      columns.forEach(column => {
+        console.log("%s\t%s", column.metadata.colName, column.value);
+        data[counter][column.metadata.colName] = column.value;
+        
+      });
+      Bigdata.push(data[counter]);
+      counter +=1;
+      
+    });
+    
+    return result;
+  }
 });
 
 router.get('/allUser/:User_Id', function (req, res) {
@@ -367,16 +466,35 @@ router.get('/allUser/:User_Id', function (req, res) {
 });
 
 router.post('/insert', function (req, res) {
-  let product = req.body.product;
-  // console.log(student);
-  if (!product) {
+  let booking = req.body.booking;
+
+  if (!booking) {
       return res.status(400).send({ error: true, message: 'Please provide studentinformation' });
   }
-  connection.query("INSERT INTO product SET ? ", product, function (error, results) {
-      if (error) throw error;
-      console.log("Yes")
-      return res.send({ error: false, data: results.affectedRows, message: 'New product has beencreated successfully.' });
-  });
+
+  InsertId(booking)
+  function InsertId(booking) {
+    console.log("Inserting rows from the Table...");
+    console.log(booking.BookingDate)
+    // Read all rows from table
+    const request = new Request(
+      `INSERT INTO bookingList VALUES (${booking.Booking_Id},${booking.User_Id},${booking.rooms_Id},'${booking.BookingDate}');  `,
+      (err, rowCount) => {
+        if (err) {
+          console.error(err.message);
+        } else {
+          console.log("Yes")
+          // Bigdata = JSON.stringify(Bigdata)
+          // sendR(result);
+          return res.send({ error: false, data:booking.Booking_Id, message: 'Booking completed' });
+        }
+      }
+    );
+    connection.execSql(request);
+   
+    
+    return ;
+  }
 });
 
 router.post('/insertUser', function (req, res) {

@@ -167,7 +167,39 @@
             </footer>
         </div>
     </footer>
+     <script>
+       var User_Id = -1;
+       function insert(id){
+        
+        let person = parseInt(prompt("Please enter your ID", ""));
+        User_Id = person;
+        var currentdate = new Date(); 
+        var datetime =  currentdate.getFullYear() + "-"
+                + (currentdate.getMonth()+1)  + "-" 
+                + currentdate.getDate()   
+                 ;
+        
+        let Booking_data = {
+          booking: {
+            Booking_Id: Math.floor(Math.random() * 10000),
+            User_Id: User_Id,
+            rooms_Id: id,
+            BookingDate: datetime,
+            
+          },
+        };
+         callProject("/insert","insert",
+         Booking_data ).then(
+             (data) => {
+       
+                alert(data.message+"\n"+"Your Booking ID is: "+data.data)
+                    
+       
+             }
+            )
 
+      }
+     </script>
     <script>
 
         var temp = window.location.search
@@ -193,12 +225,13 @@
             data = await response.json();
             return data
         }
-         
+        var check =0;
         callProduct("/result/" + text ).then(
             (data) => {
                 
                 
                 if (data.data.length > 0) {
+                    check =1;
                     // alert(data.data.length);
                     let output = '';
                     //output = "<div class= 'card-deck' style='width: 90%; margin-top:3%; margin-left: 5%; margin-bottom: 5%;'>";
@@ -214,8 +247,8 @@
                         output += "</div>";
                         output += "<div class='card-footer text-muted mx-auto w-100' style='width: 100%'>";
                         output += "&nbsp; Price :" + element.rooms_Price + "Bath";
-                        output += " <a href='Search'><button type='button' class='btn btn-outline-success float-right'>Book</button></a>";
-                        output += "<button type='button' class='btn btn-outline-success float-right' style='margin-right: 10px;'><i class='fa fa-plus' style='font-size:15px'></i></button>";
+                        output += " <button id = "+element.rooms_Id+" type='button' onclick= 'insert(id)' class='btn btn-outline-success float-right'>Book</button>";
+                        output += "<button type='button'  class='btn btn-outline-success float-right' style='margin-right: 10px;'><i class='fa fa-plus' style='font-size:15px'></i></button>";
                         output += "</div>";
                         output += "</div>";
                         output += "</div>";
@@ -224,8 +257,52 @@
                     let result = document.querySelector(".card-deck");
                     result.innerHTML += output;
                 }
+                else{
+                    let result = document.querySelector(".card-deck");
+                    result.innerHTML += "<h1>No Hotel kab Preee</h1>";
+                }
+            
             }
         );
+        async function callProject(url, method, sentData = {}) {
+        let data;
+        if (method == "selectall") {
+          let response = await fetch(url, {
+            method: "GET",
+          });
+          data = await response.json();
+        } else if (method == "select") {
+          let response = await fetch(url, {
+            method: "GET",
+          });
+          data = await response.json();
+        } else if (
+          method == "insert" ||
+          method == "update" ||
+          method == "delete"
+        ) {
+          let aMethod;
+          if (method == "insert") {
+            aMethod = "POST";
+          } else if (method == "update") {
+            aMethod = "PUT";
+          } else if (method == "delete") {
+            aMethod = "DELETE";
+          }
+          let response = await fetch(url, {
+            method: aMethod,
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(sentData),
+          });
+          data = await response.json();
+        }
+        return data;
+      }
+      
+
     </script>
 </body>
 

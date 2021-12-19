@@ -21,17 +21,19 @@
          body {
             background-repeat: no-repeat;
             background-color: rgb(255, 187, 41);
-            background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.25)), url("/hotel4k.jpg");
-            background-size: 1850px 1500px;
+            
+            background-size: 1850px 1000px;
         }
 
         .box {
             width: 100%;
             padding: 12px 20px;
             margin: 8px;
-            margin-top: 10%;
+            margin-top: 15%;
             text-align: center;
             padding-bottom: 10%;
+            margin-bottom: 20%;
+            
         }
 
         .box .container {
@@ -43,6 +45,7 @@
             align-self: center;
             margin-left: 20%;
             margin-right: 20%;
+            margin-bottom: 10%;
             border-top: 50%;
             border: 3px solid #f1f1f1;
             border-radius: 10%;
@@ -121,7 +124,7 @@
 
             border-bottom: 50%;
             margin-left: 15%;
-            position: relative;
+            /* position: relative; */
         }
 
         .topic {
@@ -134,7 +137,58 @@
             color: rgb(118, 158, 233);
 
         }
+        #popup {
+        display: none;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        padding: 0px;
+        position: fixed;
+        background-color: rgba(50, 50, 50, 0.9);
+        }
+        #form {
+        position: absolute;
+        background-color: #f5f5f5;
+        border: 1px solid #212121;
+        border-radius: 20px;
+        padding: 10px;
+        width: 80%;
+        left: 20%;
+        top: 15%;
+        margin-left: -150px;
+      }
+      @media (max-width: 813px) {
+        .card-deck {
+          display: flex;
+          flex-direction: column;
+        }
+      }
+      .card {
+        border-radius: 20px;
+        box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.2);
+      } .overlay {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100%;
+        width: 100%;
+        opacity: 0;
+        transition: 0.5s ease;
+        background-color: white;
+      }
 
+      .container {
+        position: relative;
+        width: 100%;
+        text-align: center;
+      }
+
+      .container:hover .overlay {
+        opacity: 1;
+      }
     </style>
 </head>
 
@@ -188,8 +242,48 @@
         </ul>
       </nav>
     </header>
-      <form action="/sentLogin" class="box" method="POST">
-        <fieldset>
+<!-- form -->
+<div id="popup">
+    <form id="form">
+      <button
+        id="close"
+        onclick="hide()"
+        type="button"
+        class="btn btn-outline-danger"
+        style="padding: 5px; border-radius: 20px"
+      >
+        <i class="material-icons">close</i>
+      </button>
+
+      <h2
+        style="
+          margin-top: 0%;
+          margin-bottom: 0;
+          padding-bottom: 0;
+          text-align: center;
+        "
+      >
+        Confirm CheckIn
+      </h2>
+      <div class="card" id ="cP">
+        
+      </div>
+     
+      <!-- <button
+        type="button"
+        id="submit"
+        class="btn btn-success"
+        onclick="add()"
+      >
+        Add
+      </button> -->
+    </form>
+  </div>
+
+<!--  -->
+
+      <dive class="box" id= "f">
+        <fieldset style="margin-top: 10%;" >
             <div class="container">
                 <h2 class="topic">Check In /Check out</h2>
                 <div class="login">
@@ -197,29 +291,30 @@
                         <img src="/images/checkIn.jpg" alt="Avatar" class="avartar">
                     </div>
                     <label class='' id="BID"> Booking ID: <input class='' type="text"
-                            placeholder="Enter the Booking ID" required name="Username" pattern="[A-Z,a-z,0-9]{1,}"
-                            id="User" style="border-radius:11px ; padding: 2%; width: 70%; margin-left: 2%; "></label>
+                            placeholder="Enter the Booking ID" required name="BookID" pattern="[0-9]{1,}"
+                            id="BookID" style="border-radius:11px ; padding: 2%; width: 70%; margin-left: 2%; "></label>
                     <br>
                 </div>
                 
                 <br>
                 <div class="button">
-                    <button type="submit" class="btn btn-outline-dark" id="checkIn">Check In</button>
+                    <button type="button"  class="btn btn-outline-dark" id="checkIn">Check In</button>
     
                 </div>
                 <div class="button" id="CO">
-                    <button type="submit" class="btn btn-outline-red" id="checkOut">Check Out</button>
+                    <button type="button" class="btn btn-outline-red" id="checkOut">Check Out</button>
                     <br>
                 </div>
+
                 Haven't booking yet? here
                 <a href="Search"> Booking</a>
             </div>
         </fieldset>
-    </form>
+    </div>
 
-    <div class="footer-dark">
+    <div class="footer-dark"style="margin-bottom: 0%;">
         <footer>
-            <div class="container">
+            <div class="container" style="margin-bottom: 0%;">
                 <div class="row">
                     <div class="col-sm-6 col-md-3 item">
                         <h3>Services</h3>
@@ -264,7 +359,149 @@
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
 
 
-
+ <script>
+      async function callProduct(url, method, sentData = {}) {
+            let data;
+            (method == "select")
+            let response = await fetch(url, {
+                method: 'GET'
+            });
+            data = await response.json();
+            return data
+        }
+        var Booking_Id_local;
+        var User_Id_local;
+        var rooms_Id_local;
+        var BookingDate_local;
+        
+       function Change(){
+           alert("Checked In")
+           hide()
+       }
+       function Change2(){
+           alert("Checked Out")
+           hide()
+       }
+       function ass(rooms_Id_local,User_Id_local,Booking_Id_local,BookingDate_local){ 
+        callProduct("/all_R/" + rooms_Id_local ).then(
+            (data) => {
+                
+                if (data.data.length > 0) {
+                    let output = "";
+                    data.data.forEach((element) => {
+                        output+= '<div class="container" style="width: 60%; align-self: center; margin-top: 5%">'
+                        output+= '<img class="card-img-top" src="'+element.rooms_Image+'" alt="Card image cap" style="width: 30%;" />'
+                        output+= '</div>'
+                        output+= '<div class="card-body">'
+                        output+= '<h5 class="card-title text-center" id= "HName">'+ element.rooms_Name +'<p style="font-size: 70%" id ="TH">'+ element.rooms_Name +'Thailand</p> </h5>'
+                        output+= '<p class="card-text text-left" style="font-size: 100%; padding: 0%" id ="des">&nbsp; '+ element.rooms_Description +'</p>&nbsp;'
+                        output+= '<p class="card-text text-left" style="font-size: 100%; padding: 0%" id ="UDD"><B>User ID </B>: '+User_Id_local
+                        output+= '<p class="card-text text-left" style="font-size: 100%; padding: 0%" id ="BIDD"> <B>Booking ID</B> : '+Booking_Id_local
+                        output+= '<p class="card-text text-left" style="font-size: 100%; padding: 0%" id ="DDD"> <B>Booking Date</B> : '+BookingDate_local
+                        output+= '</div>'
+                        output+= '<div class="card-footer text-muted mx-auto w-100" id ="price"> &nbsp; &nbsp; &nbsp;Price : '+ element.rooms_Price +'Bath <button  type="button" id="CHI" onclick="Change()"class="btn btn-outline-success float-right" style="margin-right: 20px">Check In</button></div>'
+                
+                       }
+                    );
+                    let result = document.querySelector("#cP");
+                    result.innerHTML = "";
+                    result.innerHTML += output;
+                }
+                
+            }
+        );
+        document.getElementById("popup").style.display = "block";
+        document.getElementById("f").style.display = "none";
+       }
+       function ass2(rooms_Id_local,User_Id_local,Booking_Id_local,BookingDate_local){ 
+        callProduct("/all_R/" + rooms_Id_local ).then(
+            (data) => {
+                
+                if (data.data.length > 0) {
+                    let output = "";
+                    data.data.forEach((element) => {
+                        output+= '<div class="container" style="width: 60%; align-self: center; margin-top: 5%">'
+                        output+= '<img class="card-img-top" src="'+element.rooms_Image+'" alt="Card image cap" style="width: 30%;" />'
+                        output+= '</div>'
+                        output+= '<div class="card-body">'
+                        output+= '<h5 class="card-title text-center" id= "HName">'+ element.rooms_Name +'<p style="font-size: 70%" id ="TH">'+ element.rooms_Name +'Thailand</p> </h5>'
+                        output+= '<p class="card-text text-left" style="font-size: 100%; padding: 0%" id ="des">&nbsp; '+ element.rooms_Description +'</p>&nbsp;'
+                        output+= '<p class="card-text text-left" style="font-size: 100%; padding: 0%" id ="UDD"><B>User ID </B>: '+User_Id_local
+                        output+= '<p class="card-text text-left" style="font-size: 100%; padding: 0%" id ="BIDD"> <B>Booking ID</B> : '+Booking_Id_local
+                        output+= '<p class="card-text text-left" style="font-size: 100%; padding: 0%" id ="DDD"> <B>Booking Date</B> : '+BookingDate_local
+                        output+= '</div>'
+                        output+= '<div class="card-footer text-muted mx-auto w-100" id ="price"> &nbsp; &nbsp; &nbsp;Price : '+ element.rooms_Price +'Bath <button  type="button" id="CHI" onclick="Change2()"class="btn btn-outline-danger float-right" style="margin-right: 20px">Check Out</button></div>'
+                
+                       }
+                    );
+                    let result = document.querySelector("#cP");
+                    result.innerHTML = "";
+                    result.innerHTML += output;
+                }
+                
+            }
+        );
+        document.getElementById("popup").style.display = "block";
+        document.getElementById("f").style.display = "none";
+       }
+     document.getElementById("checkIn").addEventListener("click", function() {
+        let found ;
+        var BID = document.getElementById("BookID").value
+        
+        callProduct("/all/" + BID ).then(
+            (data) => {
+                
+                if (data.data.length > 0) {
+                    data.data.forEach((element) => {
+                        Booking_Id_local = element.Booking_Id
+                        User_Id_local = element.User_Id
+                        rooms_Id_local = element.rooms_Id
+                        BookingDate_local =  element.BookingDate
+                        
+                        ass(rooms_Id_local,User_Id_local,Booking_Id_local,BookingDate_local);
+                       }
+                    )   
+                }
+                else{
+                    alert("Invalid Booking ID")
+                    return;
+                }
+            }
+        );
+    });
+    document.getElementById("checkOut").addEventListener("click", function() {
+        let found ;
+        var BID = document.getElementById("BookID").value
+        
+        callProduct("/all/" + BID ).then(
+            (data) => {
+                
+                if (data.data.length > 0) {
+                    data.data.forEach((element) => {
+                        Booking_Id_local = element.Booking_Id
+                        User_Id_local = element.User_Id
+                        rooms_Id_local = element.rooms_Id
+                        BookingDate_local =  element.BookingDate
+                        
+                        ass2(rooms_Id_local,User_Id_local,Booking_Id_local,BookingDate_local);
+                       }
+                    )   
+                }
+                else{
+                    alert("Invalid Booking ID")
+                    return;
+                }
+            }
+        );
+    });
+     
+      function hide() {
+        document.getElementById("popup").style.display = "none";
+        document.getElementById("f").style.display = "";
+        let result = document.querySelector("#cP");
+                    result.innerHTML = "";
+      }
+ </script>
 </body>
 
 </html>
