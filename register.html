@@ -295,48 +295,55 @@
 
     <header>
         <nav class="navbar navbar-expand fixed-top" id="navbar">
-            <a class="navbar-brand" href="Home">
-              <img src="/images/SPP.png" alt="logo" id="logo" />
-            </a>
-            <ul class="navbar">
-              <li class="nav-item">
-                <a class="active" href="Home">Home</a>
-              </li>
-              <li class="nav-item"><a href="search">Shop</a></li>
-              <li class="nav-item"><a href="About">About</a></li>
-              <li class="nav-item"><a href="Help">Help</a></li>
-              <li id="iconArea">
-                <div class="dropdown show">
-                  <a
-                    role="button"
-                    id="dropdownMenuLink"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    <img id="icon" src="/images/user.png" alt="icons"
+          <a class="navbar-brand" href="Home">
+            <img
+              src="/images/SPP.png"
+              alt="logo"
+              id="logo"
+            />
+          </a>
+          <ul class="navbar">
+            <li class="nav-item">
+              <a class="active" href="Home">Home</a>
+            </li>
+            <li class="nav-item"><a href="search">Hotel booking</a></li>
+            <li class="nav-item"><a href="CheckInOut">check in/out</a></li>
+            <li class="nav-item"><a href="Payment">payment</a></li>
+            <li id="iconArea">
+              <div class="dropdown show">
+                <a
+                  role="button"
+                  id="dropdownMenuLink"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <img
+                    id="icon"
+                    src="/images/user.png"
+                    alt="icons"
+                /></a>
+                <div
+                  class="dropdown-menu dropdown-menu-right"
+                  aria-labelledby="dropdownMenuLink"
+                >
+                  <a class="dropdown-item" href="login">Log in</a>
+                  <a class="dropdown-item" href="register">Register</a>
+                  <a class="dropdown-item" href="#"
+                    ><img
+                      id="icon"
+                      src="/images/carts.png"
+                      style="align-content: center"
+                      alt="icons"
                   /></a>
-                  <div
-                    class="dropdown-menu dropdown-menu-right"
-                    aria-labelledby="dropdownMenuLink"
-                  >
-                    <a class="dropdown-item" href="login">Log in</a>
-                    <a class="dropdown-item" href="register">Register</a>
-                    <a class="dropdown-item" href="#"
-                      ><img
-                        id="icon"
-                        src="/images/carts.png"
-                        style="align-content: center"
-                        alt="icons"
-                    /></a>
-                  </div>
                 </div>
-              </li>
-            </ul>
-          </nav>
-       
-    </header>
-    <form class="box" style="margin-top: 10%;"  onsubmit="add()" action="/login" method="GET">
+              </div>
+            </li>
+          </ul>
+        </nav>
+      </header>
+  
+    <form class="box" style="margin-top: 10%;"  onsubmit="add()" action="/Home" method="GET">
         <fieldset>
             <h2 class="topic" style="margin-top:5% ;">Register</h2>
             <div class="login">
@@ -449,8 +456,9 @@
             let Adressbtn = document.getElementById("Address");
             let Agebtn = document.getElementById("dob");
             let Emailbtn = document.getElementById("Email");
+
         function add() {
-            alert("HOHO")
+            
             let idV = Math.floor(Math.random() * 99999) + 1;
             let UsnameV = Usnamebtn.value;
             let PassV = Passbtn.value;
@@ -471,18 +479,53 @@
                 Email: EmailV,
             },
             };
-            alert(user_data.user)
+            
             callProject(
-            "http://localhost:3030/insertUser",
+            "/insertUser",
             "insert",
             user_data
             ).then((data) => {
-                alert("kuy")
-            console.log(data);
-            if (data.data > 0) {
-                
-            }
+                alert("Registeration completed")
+             
             });
+      
+      }
+      async function callProject(url, method, sentData = {}) {
+        let data;
+        if (method == "selectall") {
+          let response = await fetch(url, {
+            method: "GET",
+          });
+          data = await response.json();
+        } else if (method == "select") {
+          let response = await fetch(url, {
+            method: "GET",
+          });
+          data = await response.json();
+        } else if (
+          method == "insert" ||
+          method == "update" ||
+          method == "delete"
+        ) {
+          let aMethod;
+          if (method == "insert") {
+            aMethod = "POST";
+          } else if (method == "update") {
+            aMethod = "PUT";
+          } else if (method == "delete") {
+            aMethod = "DELETE";
+          }
+          let response = await fetch(url, {
+            method: aMethod,
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(sentData),
+          });
+          data = await response.json();
+        }
+        return data;
       }
     </script>
 </body>

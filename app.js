@@ -94,9 +94,9 @@ router.get("/search", function (req, res) {
   console.log("Send a form");
   res.sendFile(path.join(__dirname + "/Search.html"));
 });
-router.get("/about", function (req, res) {
+router.get("/Payment", function (req, res) {
   console.log("Send a form");
-  res.sendFile(path.join(__dirname + "/About.html"));
+  res.sendFile(path.join(__dirname + "/Payment.html"));
 });
 router.get("/CheckInOut", function (req, res) {
   console.log("Send a form");
@@ -499,14 +499,33 @@ router.post('/insert', function (req, res) {
 
 router.post('/insertUser', function (req, res) {
   let user = req.body.user;
-  // console.log(student);
+  console.log(user);
   if (!user) {
       return res.status(400).send({ error: true, message: 'Please provide studentinformation' });
   }
-  connection.query("INSERT INTO tbUser SET ? ", user, function (error, results) {
-      if (error) throw error;
-      return res.send({ error: false, data: results.affectedRows, message: 'New User has beencreated successfully.' });
-  });
+  InsertU(user)
+  function InsertU(user) {
+    console.log("Inserting rows from the Table...");
+    
+    // Read all rows from table
+    const request = new Request(
+      `INSERT INTO tbUser VALUES ('${user.User_Id}','${user.User_Username}','${user.User_Password}','${user.User_Fname}','${user.User_Lname}','${user.Address}',${user.User_Age},'${user.Email}');  `,
+      (err, rowCount) => {
+        if (err) {
+          console.error(err.message);
+        } else {
+          console.log("Yes")
+          // Bigdata = JSON.stringify(Bigdata)
+          // sendR(result);
+          return res.send({ error: false, data:user, message: 'Registeration completed' });
+        }
+      }
+    );
+    connection.execSql(request);
+   
+    
+    return ;
+  }
 });
 
 router.put('/update', function (req, res) {
